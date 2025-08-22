@@ -21,6 +21,9 @@ jobs:
       - name: "Checkout do código"
         uses: actions/checkout@v5.0.0
       
+      - name: "HashiCorp - Setup Terraform"
+        uses: hashicorp/setup-terraform@v2.0.3
+      
       - name: "Terraform Init"
         working-directory: ./src
         run: terraform init -backend-config="bucket=${{ secrets.AWS_BUCKET_NAME }}" -backend-config="key=${{ secrets.AWS_BUCKET_FILE }}" -backend-config="region=us-east-1"
