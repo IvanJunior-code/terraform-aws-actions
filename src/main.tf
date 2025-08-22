@@ -13,29 +13,43 @@ module "vpc" {
   enable_nat_gateway = true
   enable_vpn_gateway = true
 
-  tags = var.aws_project_tags
+  tags = merge(var.aws_project_tags, {"kubernetes.io/cluster/${module.eks.name}" = "shared"})
+
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${module.eks.name}" = "shared"
+    "kubernetes.io/role/elb" = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/cluster/${module.eks.name}" = "shared"
+    "kubernetes.io/role/internal-elb" = 1
+  }
 }
 
-# module "eks" {
-#   source  = "terraform-aws-modules/eks/aws"
-#   version = "21.1.0"
+module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "21.1.0"
 
-#   name               = var.aws_eks_name
-#   kubernetes_version = var.aws_eks_kubernetes_version
+  name               = var.aws_eks_name
+  kubernetes_version = var.aws_eks_kubernetes_version
 
-#   endpoint_public_access = true
+  endpoint_public_access = true
 
-#   enable_cluster_creator_admin_permissions = true
+  enable_cluster_creator_admin_permissions = true
 
-#   vpc_id     = module.vpc.vpc_id
-#   subnet_ids = module.vpc.private_subnets
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
 
-#   eks_managed_node_groups = {
-#     worker_nodes = {
-#       instance_types = var.aws_eks_managed_node_groups_instance_types
-#       min_size       = 2
-#       max_size       = 10
-#       desired_size   = 2
-#     }
-#   }
-# }
+  eks_managed_node_groups = {
+    worker_nodes = {
+      instance_types = var.aws_eks_managed_node_groups_instance_types
+      min_size       = 2
+      max_size       = 10
+      desired_size   = 2
+
+      tags = var.aws_project_tags
+    }
+  }
+
+  tags = var.aws_project_tags
+}
