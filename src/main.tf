@@ -52,5 +52,16 @@ module "eks" {
     }
   }
 
+  addons = {
+    coredns                = {}
+    eks-pod-identity-agent = {
+      before_compute = true
+    }
+    kube-proxy             = {}
+    vpc-cni                = {
+      before_compute = true
+    }
+  }
+
   tags = var.aws_project_tags
 }
