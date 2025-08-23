@@ -46,6 +46,12 @@ variable "aws_eks_kubernetes_version" {
   nullable    = false
 }
 
+variable "aws_eks_managed_node_groups_ami_type" {
+  description = "Imagem das instâncias dos nodes."
+  type        = string
+  nullable    = false
+}
+
 variable "aws_eks_managed_node_groups_instance_types" {
   description = "Tipos de intâncias dos nodes."
   type        = set(string)
