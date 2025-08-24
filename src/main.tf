@@ -44,7 +44,7 @@ module "eks" {
     worker_nodes = {
       instance_types = var.aws_eks_managed_node_groups_instance_types
       ami_type       = "AL2023_x86_64_STANDARD"
-      min_size       = 2
+      min_size       = 3
       max_size       = 10
       desired_size   = 3
 
