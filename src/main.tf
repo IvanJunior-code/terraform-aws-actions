@@ -46,7 +46,7 @@ module "eks" {
       ami_type       = "AL2023_x86_64_STANDARD"
       min_size       = 3
       max_size       = 10
-      desired_size   = 3
+      desired_size   = 2
 
       tags = var.aws_project_tags
     }
